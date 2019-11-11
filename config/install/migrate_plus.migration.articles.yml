@@ -1,0 +1,31 @@
+id: articles
+migration_group: articles_csv_group
+label: 'Articles'
+deriver: Drupal\custom_migrate\Plugin\Derivative\CsvMultilingualDeriver
+source:
+  path: modules/custom/custom_migrate/csv/articles.en.csv
+destination:
+  plugin: entity:node
+process:
+  type:
+    plugin: default_value
+    default_value: article
+  langcode:
+    plugin: default_value
+    default_value: en
+  title:
+    plugin: skip_on_empty
+    method: row
+    source: title
+  status:
+    plugin: default_value
+    default_value: true
+  created: created_at
+  changed: edited_at
+  body/value: body
+  body/format:
+    plugin: default_value
+    default_value: full_html
+  field_import_id: id
+  field_import_url: html_url
+migration_dependencies: {}

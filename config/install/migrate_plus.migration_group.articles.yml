@@ -1,0 +1,19 @@
+id: articles_csv_group
+status: true
+langcode: en
+label: 'Articles group (CSV source)'
+description: 'A container for migrations related to articles.'
+source_type: 'CSV source'
+shared_configuration:
+  migration_tags:
+    - articles_csv_group
+  source:
+    plugin: csv
+    header_row_count: 1
+    keys:
+      - id
+  dependencies:
+    enforced:
+      module:
+        - migrate_source_csv
+        - content_translation
