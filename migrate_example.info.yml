@@ -1,6 +1,6 @@
-name: 'Custom migrate'
+name: 'Migrate example'
 type: module
-description: 'Custom migrate module'
+description: 'Custom migrate example module'
 core: 8.x
 package: 'Custom'
 dependencies:
