@@ -6,7 +6,6 @@ use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
-use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -65,6 +64,8 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
    * @return array
    */
   private function createAdditionalDerivative(array $base_plugin_definition, LanguageInterface $language) {
+    $base_plugin_definition['source']['path'] = str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
+
     $base_plugin_definition['process']['nid'] = [
       'plugin' => 'migration_lookup',
       'source' => 'id',

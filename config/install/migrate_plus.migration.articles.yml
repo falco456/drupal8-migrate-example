@@ -1,9 +1,7 @@
 id: articles
 migration_group: articles_csv_group
 label: 'Articles'
-deriver: Drupal\custom_migrate\Plugin\Derivative\CsvMultilingualDeriver
-source:
-  path: modules/custom/custom_migrate/csv/articles.en.csv
+deriver: Drupal\migrate_example\Plugin\Derivative\CsvMultilingualDeriver
 destination:
   plugin: entity:node
 process:
@@ -27,5 +25,4 @@ process:
     plugin: default_value
     default_value: full_html
   field_import_id: id
-  field_import_url: html_url
 migration_dependencies: {}
