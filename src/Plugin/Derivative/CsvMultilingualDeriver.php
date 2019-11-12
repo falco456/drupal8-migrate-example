@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides language switcher block plugin definitions for all languages.
+ * Provides CSV multilingual migrate deriver.
  */
 class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInterface {
 
@@ -66,20 +66,9 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
   private function createAdditionalDerivative(array $base_plugin_definition, LanguageInterface $language) {
     $base_plugin_definition['source']['path'] = str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
 
-    $base_plugin_definition['process']['nid'] = [
-      'plugin' => 'migration_lookup',
-      'source' => 'id',
-      'migration' => 'articles'
-    ];
-
     $base_plugin_definition['process']['langcode'] = [
       'plugin' => 'default_value',
       'default_value' => $language->getId(),
-    ];
-
-    $base_plugin_definition['process']['content_translation_source'] = [
-      'plugin' => 'default_value',
-      'default_value' => 'en',
     ];
 
     return $base_plugin_definition;
