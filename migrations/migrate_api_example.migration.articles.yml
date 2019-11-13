@@ -1,6 +1,12 @@
 id: articles
-migration_group: articles_csv_group
 label: 'Articles'
+migration_group: migrate_api_example
+source:
+  plugin: csv
+  path: modules/custom/migrate_api_example/csv/articles.en.csv
+  header_row_count: 1
+  ids:
+    - id
 destination:
   plugin: entity:node
 process:

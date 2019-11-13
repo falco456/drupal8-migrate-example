@@ -1,0 +1,6 @@
+id: migrate_api_example
+status: true
+langcode: en
+label: 'Articles group (CSV source)'
+description: 'A container for migrations related to articles.'
+source_type: 'CSV source'

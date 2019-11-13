@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains migrate_example.module.
+ * Contains migrate_api_example.module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function migrate_example_help($route_name, RouteMatchInterface $route_match) {
+function migrate_api_example_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the migrate_example module.
-    case 'help.page.migrate_example':
+    // Main module help for the migrate_api_example module.
+    case 'help.page.migrate_api_example':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Migrate example module') . '</p>';

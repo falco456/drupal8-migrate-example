@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\migrate_example\Plugin\Derivative;
+namespace Drupal\migrate_api_example\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Language\LanguageInterface;
@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides CSV multilingual migrate deriver.
+ * CSV multilangual deriver.
  */
 class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInterface {
 
@@ -19,7 +19,7 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
   protected $languageManager;
 
   /**
-   * CsvMultilingualDeriver constructor.
+   * CategoriesLanguageDeriver constructor.
    *
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    */
@@ -40,16 +40,21 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-
     $languages = $this->languageManager->getLanguages();
     foreach ($languages as $language) {
-      // Skip en.
+      // We skip EN as that is the original language.
       if ($language->getId() === 'en') {
         continue;
       }
 
-      $derivative = $this->createAdditionalDerivative($base_plugin_definition, $language);
-      $this->derivatives[$language->getId()] = $derivative;
+      // Check if the new source path file exists,
+      // else we skip that translations.
+      $new_source_path = str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
+
+      if (file_exists($new_source_path)) {
+        $derivative = $this->getDerivativeValues($base_plugin_definition, $language);
+        $this->derivatives[$language->getId()] = $derivative;
+      }
     }
 
     return $this->derivatives;
@@ -63,7 +68,7 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
    *
    * @return array
    */
-  private function createAdditionalDerivative(array $base_plugin_definition, LanguageInterface $language) {
+  private function getDerivativeValues(array $base_plugin_definition, LanguageInterface $language) {
     $base_plugin_definition['source']['path'] = str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
 
     $base_plugin_definition['process']['langcode'] = [
