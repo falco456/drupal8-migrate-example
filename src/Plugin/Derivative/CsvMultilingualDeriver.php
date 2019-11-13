@@ -63,8 +63,12 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
   /**
    * Creates a derivative definition for each available language.
    *
-   * @param array $base_plugin_definition
+   * @param array|\Drupal\Component\Plugin\Definition\PluginDefinitionInterface $base_plugin_definition
+   *   The definition of the base plugin from which the derivative plugin
+   *   is derived. It is maybe an entire object or just some array, depending
+   *   on the discovery mechanism.
    * @param LanguageInterface $language
+   *   A language object.
    *
    * @return array
    */
