@@ -42,19 +42,15 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
   public function getDerivativeDefinitions($base_plugin_definition) {
     $languages = $this->languageManager->getLanguages();
     foreach ($languages as $language) {
-      // We skip EN as that is the original language.
-      if ($language->getId() === 'en') {
+      $new_source_path = \str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
+      // We skip EN as that is the original language and the source file needs
+      // to exist.
+      if ($language->getId() === 'en' && !\file_exists($new_source_path)) {
         continue;
       }
 
-      // Check if the new source path file exists,
-      // else we skip that translations.
-      $new_source_path = str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
-
-      if (file_exists($new_source_path)) {
-        $derivative = $this->getDerivativeValues($base_plugin_definition, $language);
-        $this->derivatives[$language->getId()] = $derivative;
-      }
+      $derivative = $this->getDerivativeValues($base_plugin_definition, $language);
+      $this->derivatives[$language->getId()] = $derivative;
     }
 
     return $this->derivatives;
@@ -64,16 +60,14 @@ class CsvMultilingualDeriver extends DeriverBase implements ContainerDeriverInte
    * Creates a derivative definition for each available language.
    *
    * @param array|\Drupal\Component\Plugin\Definition\PluginDefinitionInterface $base_plugin_definition
-   *   The definition of the base plugin from which the derivative plugin
-   *   is derived. It is maybe an entire object or just some array, depending
-   *   on the discovery mechanism.
+   *   The definition of the base plugin from the derivative plugin.
    * @param LanguageInterface $language
    *   A language object.
    *
    * @return array
    */
   private function getDerivativeValues(array $base_plugin_definition, LanguageInterface $language) {
-    $base_plugin_definition['source']['path'] = str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
+    $base_plugin_definition['source']['path'] = \str_replace('en', $language->getId(), $base_plugin_definition['source']['path']);
 
     $base_plugin_definition['process']['langcode'] = [
       'plugin' => 'default_value',
